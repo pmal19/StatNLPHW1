@@ -315,6 +315,23 @@ public class LanguageModelTester {
 		return vocabulary;
 	}
 
+	public static void gridSearchBigram(LanguageModel languageModel, Collection<List<String>> testSentenceCollection, List<SpeechNBestList> speechNBestLists) {
+		for (double lambda = 0.1; lambda <= 1; lambda += 0.1) {
+			// System.out.println("Lambda - " + lambda);
+			languageModel.setLambda(lambda);
+			// languageModel.lambda = lambda;
+			double wsjPerplexity = calculatePerplexity(languageModel,
+			testSentenceCollection);
+			double hubPerplexity = calculatePerplexity(languageModel,
+					extractCorrectSentenceList(speechNBestLists));
+			System.out.println("WSJ Perplexity:  " + wsjPerplexity);
+			System.out.println("HUB Perplexity:  " + hubPerplexity);
+			double wordErrorRate = calculateWordErrorRate(languageModel,
+					speechNBestLists, false);
+			System.out.println("HUB Word Error Rate: " + wordErrorRate);
+		}
+	}
+
 	public static void main(String[] args) throws IOException {
 		// Parse command line flags and arguments
 		Map<String, String> argMap = CommandLineUtils
@@ -408,7 +425,8 @@ public class LanguageModelTester {
 		double wordErrorRate = calculateWordErrorRate(languageModel,
 				speechNBestLists, verbose);
 		System.out.println("HUB Word Error Rate: " + wordErrorRate);
-		
+		System.out.println("GridSearch -------------------");
+		gridSearchBigram(languageModel, testSentenceCollection, speechNBestLists);
 		// Buggy do not uncomment :)
 		//System.out.println("Generated Sentences:");
 		// for (int i = 0; i < 10; i++)

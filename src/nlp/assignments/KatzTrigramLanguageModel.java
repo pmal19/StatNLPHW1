@@ -23,6 +23,14 @@ class KatzTrigramLanguageModel implements LanguageModel {
 	Counter<String> wordCounter = new Counter<String>();
 	CounterMap<String, String> bigramCounter = new CounterMap<String, String>();
 	CounterMap<String, String> trigramCounter = new CounterMap<String, String>();
+	
+	public void setLambda(double lambda) {
+	}
+
+	public void setLambdas(double lambda1, double lambda2) {	
+		lambda1 = lambda1;
+		lambda2 = lambda2;
+	}
 
 	public double getTrigramProbability(String prePreviousWord,
 			String previousWord, String word) {

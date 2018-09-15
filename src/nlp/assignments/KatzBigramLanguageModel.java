@@ -26,6 +26,12 @@ class KatzBigramLanguageModel implements LanguageModel {
 	Counter<String> discountedWordCounter = new Counter<String>();
 	Counter<String> discountedBigramCounter = new Counter<String>();
 
+	public void setLambda(double lambda) {
+	}
+
+	public void setLambdas(double lambda1, double lambda2) {	
+	}
+
 	public double getBigramProbability(String previousWord, String word) {
 		double bigramProbability = probabilities.getCount(previousWord + " "
 				+ word);

@@ -22,6 +22,12 @@ class SriLanguageModel implements LanguageModel {
 	Counter<String> probabilities = new Counter<String>();
 	Counter<String> backoffs = new Counter<String>();
 
+	public void setLambda(double lambda) {
+	}
+
+	public void setLambdas(double lambda1, double lambda2) {	
+	}
+
 	public double getTrigramProbability(String prePreviousWord,
 			String previousWord, String word) {
 		double trigramProbability = probabilities.getCount(prePreviousWord

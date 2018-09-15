@@ -18,6 +18,12 @@ class EmpiricalUnigramLanguageModel implements LanguageModel {
 
 	Counter<String> wordCounter = new Counter<String>();
 
+	public void setLambda(double lambda) {
+	}
+
+	public void setLambdas(double lambda1, double lambda2) {	
+	}
+
 	public double getWordProbability(List<String> sentence, int index) {
 		String word = sentence.get(index);
 		double count = wordCounter.getCount(word);
