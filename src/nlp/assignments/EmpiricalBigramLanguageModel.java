@@ -16,7 +16,7 @@ class EmpiricalBigramLanguageModel implements LanguageModel {
 	static final String START = "<S>";
 	static final String STOP = "</S>";
 	static final String UNKNOWN = "*UNKNOWN*";
-	public double lambda = 0.6;
+	public double lambda = 0.1;
 
 	Counter<String> wordCounter = new Counter<String>();
 	CounterMap<String, String> bigramCounter = new CounterMap<String, String>();
@@ -36,11 +36,10 @@ class EmpiricalBigramLanguageModel implements LanguageModel {
 			System.out.println("UNKNOWN Word: " + word);
 			unigramCount = wordCounter.getCount(UNKNOWN);
 		}
-		return lambda * bigramCount + (1.0 - lambda) * unigramCount;
+		return this.lambda * bigramCount + (1.0 - this.lambda) * unigramCount;
 	}
 
 	public double getSentenceProbability(List<String> sentence) {
-		System.out.println("Lambda inside - " + this.lambda);
 		List<String> stoppedSentence = new ArrayList<String>(sentence);
 		stoppedSentence.add(0, START);
 		stoppedSentence.add(STOP);

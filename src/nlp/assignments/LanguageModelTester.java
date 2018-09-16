@@ -316,7 +316,7 @@ public class LanguageModelTester {
 	}
 
 	public static void gridSearchBigram(LanguageModel languageModel, Collection<List<String>> testSentenceCollection, List<SpeechNBestList> speechNBestLists) {
-		for (double lambda = 0.1; lambda <= 1; lambda += 0.1) {
+		for (double lambda = 0.1; lambda < 1; lambda += 0.5) {
 			// System.out.println("Lambda - " + lambda);
 			languageModel.setLambda(lambda);
 			// languageModel.lambda = lambda;
@@ -426,7 +426,7 @@ public class LanguageModelTester {
 				speechNBestLists, verbose);
 		System.out.println("HUB Word Error Rate: " + wordErrorRate);
 		System.out.println("GridSearch -------------------");
-		gridSearchBigram(languageModel, testSentenceCollection, speechNBestLists);
+		// gridSearchBigram(languageModel, testSentenceCollection, speechNBestLists);
 		// Buggy do not uncomment :)
 		//System.out.println("Generated Sentences:");
 		// for (int i = 0; i < 10; i++)
