@@ -23,7 +23,7 @@ class EmpiricalBigramLanguageModel implements LanguageModel {
 
 	public void setLambda(double lambda1) {
 		this.lambda = lambda1;
-		System.out.println("Lambda inside - " + this.lambda);
+		System.out.println("Lambda - " + this.lambda);
 	}
 
 	public void setLambdas(double lambda1, double lambda2) {	
@@ -33,7 +33,7 @@ class EmpiricalBigramLanguageModel implements LanguageModel {
 		double bigramCount = bigramCounter.getCount(previousWord, word);
 		double unigramCount = wordCounter.getCount(word);
 		if (unigramCount == 0) {
-			System.out.println("UNKNOWN Word: " + word);
+			// System.out.println("UNKNOWN Word: " + word);
 			unigramCount = wordCounter.getCount(UNKNOWN);
 		}
 		return this.lambda * bigramCount + (1.0 - this.lambda) * unigramCount;

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
@@ -315,11 +316,11 @@ public class LanguageModelTester {
 		return vocabulary;
 	}
 
-	public static void gridSearchBigram(LanguageModel languageModel, Collection<List<String>> testSentenceCollection, List<SpeechNBestList> speechNBestLists) {
-		for (double lambda = 0.1; lambda < 1; lambda += 0.5) {
-			// System.out.println("Lambda - " + lambda);
+	public static void gridSearchBigram(LanguageModel languageModel, Collection<List<String>> testSentenceCollection, List<SpeechNBestList> speechNBestLists) throws IOException {
+		PrintWriter writer = new PrintWriter("Bigram_gridSearch.txt", "UTF-8");
+		writer.println(" Lambda, WSJ Perplexity, HUB Perplexity, HUB WER");
+		for (double lambda = 0.1; lambda <= 1; lambda += 0.1) {
 			languageModel.setLambda(lambda);
-			// languageModel.lambda = lambda;
 			double wsjPerplexity = calculatePerplexity(languageModel,
 			testSentenceCollection);
 			double hubPerplexity = calculatePerplexity(languageModel,
@@ -329,7 +330,31 @@ public class LanguageModelTester {
 			double wordErrorRate = calculateWordErrorRate(languageModel,
 					speechNBestLists, false);
 			System.out.println("HUB Word Error Rate: " + wordErrorRate);
+			writer.println(" "+lambda+","+wsjPerplexity+","+hubPerplexity+","+wordErrorRate);
 		}
+		writer.close();
+	}
+
+	public static void gridSearchTrigram(LanguageModel languageModel, Collection<List<String>> testSentenceCollection, List<SpeechNBestList> speechNBestLists) throws IOException {
+		PrintWriter writer = new PrintWriter("Trigram_gridSearch.txt", "UTF-8");
+		writer.println(" Lambda1, Lambda2, WSJ Perplexity, HUB Perplexity, HUB WER");
+
+		for (double lambda1 = 0.1; lambda1 <= 1; lambda1 += 0.1) {
+			for (double lambda2 = 0.1; lambda2 <= 1 - lambda1; lambda2 += 0.1) {
+				languageModel.setLambdas(lambda1, lambda2);
+				double wsjPerplexity = calculatePerplexity(languageModel,
+				testSentenceCollection);
+				double hubPerplexity = calculatePerplexity(languageModel,
+						extractCorrectSentenceList(speechNBestLists));
+				System.out.println("WSJ Perplexity:  " + wsjPerplexity);
+				System.out.println("HUB Perplexity:  " + hubPerplexity);
+				double wordErrorRate = calculateWordErrorRate(languageModel,
+						speechNBestLists, false);
+				System.out.println("HUB Word Error Rate: " + wordErrorRate);
+				writer.println(" "+lambda1+","+lambda2+","+wsjPerplexity+","+hubPerplexity+","+wordErrorRate);
+			}
+		}
+		writer.close();
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -427,6 +452,7 @@ public class LanguageModelTester {
 		System.out.println("HUB Word Error Rate: " + wordErrorRate);
 		System.out.println("GridSearch -------------------");
 		// gridSearchBigram(languageModel, testSentenceCollection, speechNBestLists);
+		gridSearchTrigram(languageModel, testSentenceCollection, speechNBestLists);
 		// Buggy do not uncomment :)
 		//System.out.println("Generated Sentences:");
 		// for (int i = 0; i < 10; i++)

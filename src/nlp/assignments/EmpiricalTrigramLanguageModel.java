@@ -16,15 +16,15 @@ class EmpiricalTrigramLanguageModel implements LanguageModel {
 	static final String START = "<S>";
 	static final String STOP = "</S>";
 	static final String UNKNOWN = "*UNKNOWN*";
-	static double lambda1 = 0.5;
-	static double lambda2 = 0.3;
+	public double lambda1 = 0.5;
+	public double lambda2 = 0.3;
 
 	public void setLambda(double lambda) {
 	}
 
 	public void setLambdas(double lambda1, double lambda2) {
-		lambda1 = lambda1;
-		lambda2 = lambda2;
+		this.lambda1 = lambda1;
+		this.lambda2 = lambda2;
 	}
 
 	Counter<String> wordCounter = new Counter<String>();
